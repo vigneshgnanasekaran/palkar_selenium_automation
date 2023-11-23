@@ -4,12 +4,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.utilites.CommonUtility;
+
 public class ReadProperties {
 	
 	 private static Properties loadProperties() {
 		 
 	        Properties properties = new Properties();
-	        try (FileInputStream input = new FileInputStream("/home/francium/eclipse-workspac/SeleniumAutomation/lib/src/test/resources/org/config/config.properties")) {
+	        try (FileInputStream input = new FileInputStream(CommonUtility.CONFIG_PROPERTIES_LOCATION)) {
 	            properties.load(input);
 	        } catch (IOException e) {
 	            e.printStackTrace();

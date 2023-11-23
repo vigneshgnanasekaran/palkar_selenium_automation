@@ -10,7 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class HomePage {
 	WebDriver driver;
 	
-	By LoggedInMessage = By.xpath("//div[contains(., 'You have successfully logged in.')]");
+	By LoggedInMessage = By.xpath("//div[contains(.,'You have successfully logged in.')]");
 	public HomePage(WebDriver driver) {
 		 this.driver = driver;
 	}
