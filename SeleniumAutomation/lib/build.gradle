@@ -30,6 +30,11 @@ dependencies {
     
     implementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '5.5.3'
     
+     implementation group: 'commons-io', name: 'commons-io', version: '2.4'
+    
+    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '3.8-beta4'
+    
+    
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

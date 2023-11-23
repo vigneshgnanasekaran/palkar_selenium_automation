@@ -22,6 +22,7 @@ public class DriverUtillity {
 			driver = new ChromeDriver();
 			driver.manage().window().maximize();
 			driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+			 
 		}
 		return driver;
 	}

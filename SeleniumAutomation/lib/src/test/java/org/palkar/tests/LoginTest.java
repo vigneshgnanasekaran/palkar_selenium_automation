@@ -1,11 +1,10 @@
 package org.palkar.tests;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.config.ReadProperties;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.palkar.pages.HomePage;
 import org.palkar.pages.LoginPage;
 import org.utilites.DriverUtillity;
@@ -28,34 +27,22 @@ public class LoginTest {
 		DriverUtillity.quit();
 	}
 
-	@Test
-	public void Valid_Login_Credentials() {
-		DriverUtillity.initializeDriver().get(objReadProperties.getProperty("url"));
-		objLoginPage.LoginPageValidation(
-				objReadProperties.getProperty("useremail"),
-				objReadProperties.getProperty("userpassword"))
-		.waitForValidationMessages();
+	@ParameterizedTest
+    @MethodSource("org.palkar.pages.LoginPage#getUserCredentials")
+    public void Valid_Login_Credentials(String username, String password) {
+        DriverUtillity.initializeDriver().get(objReadProperties.getProperty("url"));
+        objLoginPage.LoginPageValidation(username, password).waitForValidationMessages();
+
 
 		if (objLoginPage.emailBlank && objLoginPage.passBlank) {
-			String validationMessage = objLoginPage.EmailAndPasswordBlankValidation();
-			assertTrue(validationMessage.contains("Email can't be blank"));
-			assertTrue(validationMessage.contains("Password can't be blank"));
-
-		} else if (objLoginPage.emailBlank) {
-			String validationMessage = objLoginPage.EmailBlankValidation();
-			assertTrue(validationMessage.contains("Email can't be blank"));
+			 objLoginPage.EmailAndPasswordBlankValidation();
+		} else if (objLoginPage.invalidEmailId && objLoginPage.emailBlank ) {
+			  objLoginPage.InvalidEmailIdAndFormatValidation();
+        }else if (objLoginPage.emailBlank) {
+			 objLoginPage.EmailBlankValidation();
 		} else if (objLoginPage.passBlank) {
-			String validationMessage = objLoginPage.PasswordBlankValidation();
-			assertTrue(validationMessage.contains("Password can't be blank"));
-
-		} else {
-			if (!DriverUtillity.initializeDriver().findElements(objLoginPage.InvalidCredentialsMessage).isEmpty()) {
-				String validationMessage = objLoginPage.InvalidCredentialsValidation();
-				assertTrue(validationMessage.contains("Please check your credentials"));
-			} else if (!DriverUtillity.initializeDriver().findElements(objLoginPage.LoggedInMessage).isEmpty()) {
-				String validationMessage = objLoginPage.SuccessfullyLoggedInValidation();
-				assertTrue(validationMessage.contains("You have successfully logged in"));
-			}
-		}
+		}  else  {
+			objLoginPage.CheckLoginStatus();
+	}
 	}
 }
