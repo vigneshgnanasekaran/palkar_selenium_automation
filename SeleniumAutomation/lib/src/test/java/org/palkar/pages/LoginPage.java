@@ -5,13 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.bidi.log.LogEntry;
-import org.openqa.selenium.logging.LogEntries;
-import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.utilites.CommonUtility;
 import org.utilites.ExcelReader;
@@ -25,7 +21,8 @@ public class LoginPage {
 	private By LoginCheckbox = By.xpath("//label[@class=\"custom-control-label\"]");
 	private By LoginButton = By.xpath("//button[contains(text(), ' Log')]");
 
-	public By LoggedInMessage = By.xpath("//div[contains(text(), 'You have successfully logged in')]");
+	public By LoggedInMessage = By
+			.xpath("//div[@role=\"status\"]//div[@class=\"toasted bg-success toasted-primary default\" and text()]");
 	public By InvalidCredentialsMessage = By.xpath("//div[contains(., 'Please check your credentials')]");
 
 	private By EmailCannotBlankMessage = By
@@ -64,6 +61,20 @@ public class LoginPage {
 		invalidEmailId = !driver.findElements(InvalidEmailIdFormat).isEmpty();
 		loggedInMessage = !driver.findElements(LoggedInMessage).isEmpty();
 		invalidCredentialsMessage = !driver.findElements(InvalidCredentialsMessage).isEmpty();
+	}
+
+	public void handleValidation() {
+		if (emailBlank && passBlank) {
+			EmailAndPasswordBlankValidation();
+		} else if (invalidEmailId && emailBlank) {
+			InvalidEmailIdAndFormatValidation();
+		} else if (emailBlank) {
+			EmailBlankValidation();
+		} else if (passBlank) {
+			PasswordBlankValidation();
+		} else {
+			CheckLoginStatus();
+		}
 	}
 
 	public String EmailAndPasswordBlankValidation() {
@@ -124,4 +135,7 @@ public class LoginPage {
 		}
 		return testData;
 	}
+
 }
+
+//*[contains(text(),'Your notification here')]
