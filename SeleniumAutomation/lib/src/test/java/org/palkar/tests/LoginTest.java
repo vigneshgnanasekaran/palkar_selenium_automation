@@ -28,21 +28,11 @@ public class LoginTest {
 	}
 
 	@ParameterizedTest
-    @MethodSource("org.palkar.pages.LoginPage#getUserCredentials")
-    public void Valid_Login_Credentials(String username, String password) {
-        DriverUtillity.initializeDriver().get(objReadProperties.getProperty("url"));
-        objLoginPage.LoginPageValidation(username, password).waitForValidationMessages();
+	@MethodSource("org.palkar.pages.LoginPage#getUserCredentials")
+	public void Valid_Login_Credentials(String username, String password) {
+		DriverUtillity.initializeDriver().get(objReadProperties.getProperty("url"));
+		objLoginPage.LoginPageValidation(username, password).waitForValidationMessages();
+		objLoginPage.handleValidation();
 
-
-		if (objLoginPage.emailBlank && objLoginPage.passBlank) {
-			 objLoginPage.EmailAndPasswordBlankValidation();
-		} else if (objLoginPage.invalidEmailId && objLoginPage.emailBlank ) {
-			  objLoginPage.InvalidEmailIdAndFormatValidation();
-        }else if (objLoginPage.emailBlank) {
-			 objLoginPage.EmailBlankValidation();
-		} else if (objLoginPage.passBlank) {
-		}  else  {
-			objLoginPage.CheckLoginStatus();
-	}
 	}
 }
